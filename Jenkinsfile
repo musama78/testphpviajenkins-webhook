@@ -4,7 +4,7 @@ pipeline {
   }
   stages {
             /* checkout repo */
-    stage('Checkout SCM') {
+    stage('Checkout mySCM') {
       steps {
                 checkout([
                  $class: 'GitSCM',

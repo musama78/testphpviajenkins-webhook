@@ -6,16 +6,23 @@ pipeline {
             /* checkout repo */
     stage('Checkout mySCM') {
       steps {
-                checkout([
-                 $class: 'GitSCM',
-                 branches: [[name: 'master']],
-                 userRemoteConfigs: [[
-                    //url: 'git@github.com:wshihadeh/rabbitmq_client.git',
-                   url: 'https://github.com/musama78/testphpviajenkins-webhook.git',
-                    credentialsId: '',
-                 ]]
-                ])
-            }
+        checkout scmGit(
+          branches: [[name: '*/main']], 
+          extensions: [], 
+          userRemoteConfigs: [[url: 'https://github.com/musama78/testphpviajenkins-webhook.git']]
+        )
+      }
+//       steps {
+//                 checkout([
+//                  $class: 'GitSCM',
+//                  branches: [[name: 'master']],
+//                  userRemoteConfigs: [[
+//                     //url: 'git@github.com:wshihadeh/rabbitmq_client.git',
+//                    url: 'https://github.com/musama78/testphpviajenkins-webhook.git',
+//                     credentialsId: '',
+//                  ]]
+//                 ])
+//             }
     }
     stage ('Run Docker Compose') {
       steps{

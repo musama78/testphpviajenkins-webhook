@@ -1,8 +1,5 @@
 properties([pipelineTriggers([githubPush()])])
 
-def tag = sh(script: "date +%Y%m%d%H%M%S", returnStdout: true).trim()
-def imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
-
 pipeline {
   agent {
     label "abc"
@@ -34,32 +31,27 @@ pipeline {
 //             }
     }
     ///////////////////////////////////////////////////////
-    stage('*******************Build Image*******************') {
+    stage('Build and Push Image') {
       steps {
         script {
+          def tag = sh(script: "date +%Y%m%d%H%M%S", returnStdout: true).trim()
+          def imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
+          
           // build image
-          //sh "docker build . -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
-          sh "docker build . -t ${imageWithTag}"
-        }
-      }
-    }
-    //////////////////////////////////////////////////////
-    stage('*******************Push Image*******************') {
-      steps {
-        script {
-         
+          sh "docker-compose build --build-arg IMAGE_TAG=${tag}"
+          
           // tag and push image
-          //sh "docker tag ${IMAGE_NAME}:latest ${imageWithTag}"
-          sh "docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
+          sh "docker tag ${IMAGE_NAME}:latest ${imageWithTag}"
+          sh "docker push ${imageWithTag}"
           
           sh "export myTAG=${tag}"
         }
       }
     }
-    /////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
     stage ('Run Docker Compose') {
       steps{
-        sh 'sudo docker-compose up -d --build --remove-orphans --force-recreate --no-deps --name mycontainer --env TAG=${tag}'
+        sh 'sudo docker-compose up -d --build --remove-orphans --force-recreate --name mycontainer --env TAG=${tag}'
       }
     }
   }

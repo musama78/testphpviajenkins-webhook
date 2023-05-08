@@ -5,7 +5,7 @@ services:
 #         build: .
 #         environment:
 #         - IMAGE_NAME=muhammadusama7/phpcicd
-        image: muhammadusama7/phpcicd:latest
+        image: muhammadusama7/phpcicd:${mytag}
         ports:
             - "80:80"
 #         volumes:

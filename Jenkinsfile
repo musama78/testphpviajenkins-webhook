@@ -50,7 +50,7 @@ pipeline {
          
           // tag and push image
           //sh "docker tag ${IMAGE_NAME}:latest ${imageWithTag}"
-          sh "docker push ${imageWithTag}"
+          sh "docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
           
           sh "export myTAG=${tag}"
         }

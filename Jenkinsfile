@@ -4,6 +4,10 @@ pipeline {
   agent {
     label "abc"
   }
+  environment {
+    IMAGE_NAME = "my-image"
+    DOCKER_REGISTRY = "docker.io"
+  }
   stages {
             /* checkout repo */
     stage('Checkout mySCM') {
@@ -26,6 +30,23 @@ pipeline {
 //                 ])
 //             }
     }
+    ///////////////////////////////////////////////////////
+    stage('Build and Push Image') {
+      steps {
+        script {
+          def tag = sh(script: "date +%Y%m%d%H%M%S", returnStdout: true).trim()
+          def imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
+          
+          // build image
+          sh "docker-compose build --build-arg IMAGE_TAG=${tag}"
+          
+          // tag and push image
+          sh "docker tag ${IMAGE_NAME}:latest ${imageWithTag}"
+          sh "docker push ${imageWithTag}"
+        }
+      }
+    }
+    //////////////////////////////////////////////////////
     stage ('Run Docker Compose') {
       steps{
         sh 'sudo docker-compose up -d'

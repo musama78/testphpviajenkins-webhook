@@ -38,7 +38,8 @@ pipeline {
           def imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
           
           // build image
-          sh "docker-compose build --build-arg IMAGE_TAG=${tag}"
+          //sh "docker-compose build --build-arg IMAGE_TAG=${tag}"
+          sh "docker-compose build --no-cache www"
           
           // tag and push image
           sh "docker tag ${IMAGE_NAME}:${tag} ${imageWithTag}"

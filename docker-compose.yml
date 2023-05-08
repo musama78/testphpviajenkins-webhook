@@ -11,5 +11,5 @@ services:
 #             - ./www:/var/www/html/
         networks:
             - default
-        command: bash -c "TAG=$(date +%Y%m%d%H%M%S) && docker tag $IMAGE_NAME:$TAG && docker push $IMAGE_NAME:$TAG"
+        command: 'bash -c "TAG=$(date +%Y%m%d%H%M%S) && docker tag $IMAGE_NAME:$TAG && docker push $IMAGE_NAME:$TAG"'
 

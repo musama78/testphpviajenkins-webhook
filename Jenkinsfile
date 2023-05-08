@@ -51,7 +51,7 @@ pipeline {
     //////////////////////////////////////////////////////
     stage ('Run Docker Compose') {
       steps{
-        sh 'sudo docker-compose up -d'
+        sh 'sudo docker-compose up -d --build --remove-orphans --force-recreate --no-deps --with-registry-auth --scale www=2 --name mycontainer --env TAG=${tag}'
       }
     }
   }

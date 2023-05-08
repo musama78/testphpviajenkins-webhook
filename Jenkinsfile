@@ -38,7 +38,7 @@ pipeline {
           def imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
           
           // build image
-          sh "docker build -t IMAGE_TAG=${tag}"
+          sh "docker build -t imageWithTag"
 
         }
       }

@@ -1,11 +1,16 @@
 ---
-version: "2"
+version: "3"
 services:
     www:
+    
 #         build: .
 #         environment:
 #         - IMAGE_NAME=muhammadusama7/phpcicd
-        image: muhammadusama7/phpcicd:${mytag}
+        context: .
+        dockerfile: Dockerfile
+        args:
+            - TAG=${mytag}
+        image: muhammadusama7/phpcicd:${TAG}
         ports:
             - "80:80"
 #         volumes:

@@ -39,7 +39,7 @@ pipeline {
           
           // build image
           //sh "docker-compose build --build-arg IMAGE_TAG=${tag}"
-          sh "docker-compose build -t ${IMAGE_NAME}:${tag}"
+          sh "docker-compose build . -t ${IMAGE_NAME}:${tag}"
           
           // tag and push image
           sh "docker tag ${IMAGE_NAME}:${tag} ${imageWithTag}"

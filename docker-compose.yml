@@ -6,10 +6,7 @@ services:
 #         build: .
 #         environment:
 #         - IMAGE_NAME=muhammadusama7/phpcicd
-        context: .
-        dockerfile: Dockerfile
-        args:
-            - TAG=${mytag}
+
         image: muhammadusama7/phpcicd:${TAG}
         ports:
             - "80:80"

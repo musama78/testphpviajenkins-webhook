@@ -5,8 +5,8 @@ pipeline {
     label "abc"
   }
   environment {
-    IMAGE_NAME = "my-image"
-    DOCKER_REGISTRY = "docker.io"
+    IMAGE_NAME = "phpcicd"
+    DOCKER_REGISTRY = "muhammadusama7"
   }
   stages {
             /* checkout repo */

@@ -41,7 +41,7 @@ pipeline {
           sh "docker-compose build --build-arg IMAGE_TAG=${tag}"
           
           // tag and push image
-          sh "docker tag ${IMAGE_NAME}:${tag} ${imageWithTag}"
+          sh "docker tag ${IMAGE_NAME}:latest ${imageWithTag}"
           sh "docker push ${imageWithTag}"
           
           sh "export myTAG=${tag}"
@@ -51,7 +51,7 @@ pipeline {
     //////////////////////////////////////////////////////
     stage ('Run Docker Compose') {
       steps{
-        sh 'sudo docker-compose up -d --build --remove-orphans --force-recreate --name mycontainer --env TAG=${tag}'
+        sh 'sudo docker-compose up -d --build --remove-orphans --force-recreate --no-deps --with-registry-auth --scale www=2 --name mycontainer --env TAG=${tag}'
       }
     }
   }

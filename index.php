@@ -1,6 +1,6 @@
 <html>
  <head>
-  <title>Hello | Docker class</title>
+  <title>Docker class</title>
 </head>
 <body>
 

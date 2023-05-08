@@ -43,6 +43,8 @@ pipeline {
           // tag and push image
           sh "docker tag ${IMAGE_NAME}:latest ${imageWithTag}"
           sh "docker push ${imageWithTag}"
+          
+          sh "export myTAG=${tag}"
         }
       }
     }

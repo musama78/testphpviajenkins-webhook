@@ -38,8 +38,8 @@ pipeline {
           def imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
           
           // build image
-          sh "docker build . -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
-
+          //sh "docker build . -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
+          sh "docker build . -t ${imageWithTag}"
         }
       }
     }
@@ -49,7 +49,7 @@ pipeline {
         script {
          
           // tag and push image
-          sh "docker tag ${IMAGE_NAME}:latest ${imageWithTag}"
+          //sh "docker tag ${IMAGE_NAME}:latest ${imageWithTag}"
           sh "docker push ${imageWithTag}"
           
           sh "export myTAG=${tag}"

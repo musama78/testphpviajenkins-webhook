@@ -2,14 +2,14 @@
 version: "2"
 services:
     www:
-        build: .
-        environment:
-        - IMAGE_NAME=muhammadusama7/phpcicd
+#         build: .
+#         environment:
+#         - IMAGE_NAME=muhammadusama7/phpcicd
         ports:
             - "80:80"
 #         volumes:
 #             - ./www:/var/www/html/
         networks:
             - default
-        command: 'bash -c "TAG=$(date +%Y%m%d%H%M%S) && docker tag $IMAGE_NAME:$TAG && docker push $IMAGE_NAME:$TAG"'
+#         command: 'bash -c "TAG=$(date +%Y%m%d%H%M%S) && docker tag $IMAGE_NAME:$TAG && docker push $IMAGE_NAME:$TAG"'
 

@@ -31,15 +31,23 @@ pipeline {
 //             }
     }
     ///////////////////////////////////////////////////////
-    stage('Build and Push Image') {
+    stage('*******************Build Image*******************') {
       steps {
         script {
           def tag = sh(script: "date +%Y%m%d%H%M%S", returnStdout: true).trim()
           def imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
           
           // build image
-          sh "docker-compose build --build-arg IMAGE_TAG=${tag}"
-          
+          sh "docker build --build-arg IMAGE_TAG=${tag}"
+
+        }
+      }
+    }
+    //////////////////////////////////////////////////////
+    stage('*******************Push Image*******************') {
+      steps {
+        script {
+         
           // tag and push image
           sh "docker tag ${IMAGE_NAME}:latest ${imageWithTag}"
           sh "docker push ${imageWithTag}"
@@ -48,10 +56,10 @@ pipeline {
         }
       }
     }
-    //////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////
     stage ('Run Docker Compose') {
       steps{
-        sh 'sudo docker-compose up -d --build --remove-orphans --force-recreate --no-deps --with-registry-auth --scale www=2 --name mycontainer --env TAG=${tag}'
+        sh 'sudo docker-compose up -d --build --remove-orphans --force-recreate --no-deps --name mycontainer --env TAG=${tag}'
       }
     }
   }

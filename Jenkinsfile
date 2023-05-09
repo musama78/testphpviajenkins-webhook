@@ -26,8 +26,8 @@ pipeline {
           def tag = sh(script: "date +%Y%m%d%H%M%S", returnStdout: true).trim()
           def imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
           //////////////////////
-            sh "docker build -t ${IMAGE_NAME} ."
-            sh "docker tag ${NAME}:latest ${IMAGE_REPO}/${NAME}:${VERSION}"
+            sh "docker build -t imageWithTag ."
+            //sh "docker tag ${NAME}:latest ${IMAGE_REPO}/${NAME}:${VERSION}"
           //////////////////////
 //////////// build image
           //sh "docker-compose build --build-arg IMAGE_TAG=${tag}"

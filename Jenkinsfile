@@ -28,9 +28,10 @@ pipeline {
           tag = sh(script: "date +%Y%m%d-%H.%M.%S", returnStdout: true).trim()
           imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
           
-          def containerImages = sh(script: "sudo docker images -aqf 'name=phpcicd'", returnStdout: true).trim()
-          if (containerImages) {
-            sh "sudo docker rmi -f ${containerImages}"
+          def imageExists = sh(script: "docker images | grep phpcicd", returnStatus: true) == 0
+            
+          if (imageExists) {
+              sh "docker rmi -f \$(docker images -q 'phpcicd*')"
           }
           // build image
           sh "docker build -t ${IMAGE_NAME}:${tag} ."

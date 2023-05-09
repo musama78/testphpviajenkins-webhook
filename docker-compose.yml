@@ -7,8 +7,7 @@ services:
 #         environment:
 #         - IMAGE_NAME=muhammadusama7/phpcicd
 
-        image: muhammadusama7/phpcicd
-#         :${TAGVAR}
+        image: muhammadusama7/phpcicd:${TAGVAR}
         ports:
             - "80:80"
 #         volumes:

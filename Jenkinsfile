@@ -20,6 +20,25 @@ pipeline {
         )
       }
     }
+    stage('Removing Previous Images and Containers') {
+      steps {
+        script {
+          // Removing Containers
+          def containerName = sh(script: "sudo docker ps -aqf 'name=phpcicd'", returnStdout: true).trim()
+          if (containerName) {
+            sh "sudo docker rm -f ${containerName}"
+            echo "++++++++++++++++++++ Previous Containers Removed ++++++++++++++++++++"
+          }
+          
+          // Removing Images
+          def imageExists = sh(script: "docker images | grep phpcicd", returnStatus: true) == 0
+          if (imageExists) {
+            sh "docker rmi -f \$(docker images -q '*phpcicd*')"
+            echo "++++++++++++++++++++ Previous Images Removed ++++++++++++++++++++"
+          }
+        }
+      }
+    }
     /* Building and Tagging. */
     stage('Build and Tag Image') {
       steps {
@@ -27,12 +46,7 @@ pipeline {
           //def tag = sh(script: "date +%Y%m%d%H%M%S", returnStdout: true).trim()
           tag = sh(script: "date +%Y%m%d-%H.%M.%S", returnStdout: true).trim()
           imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
-          
-          def imageExists = sh(script: "docker images | grep phpcicd", returnStatus: true) == 0
-            
-          if (imageExists) {
-              sh "docker rmi -f \$(docker images -q 'phpcicd*')"
-          }
+        
           // build image
           sh "docker build -t ${IMAGE_NAME}:${tag} ."
           echo "-------------------- Image Build Done --------------------"
@@ -57,20 +71,15 @@ pipeline {
       }
     }
     /* Running Container */
-    stage ('Run Docker Compose') {
+    stage ('Creating Container') {
       steps{
         //sh 'sudo docker-compose up -d  --name mycontainer --env TAGVAR=${tag}'
         //--build --remove-orphans --force-recreate --no-deps
         //sh 'sudo docker-compose up -d'
         script {
-          def containerName = sh(script: "sudo docker ps -aqf 'name=phpcicd'", returnStdout: true).trim()
+         
+            sh "sudo docker run -d -p 80:80 --name ${IMAGE_NAME}-${tag} ${imageWithTag}"
 
-          if (containerName) {
-            sh "sudo docker rm -f ${containerName}"
-            sh "sudo docker run -d -p 80:80 --name ${IMAGE_NAME}-${tag} ${imageWithTag}"
-          } else {
-            sh "sudo docker run -d -p 80:80 --name ${IMAGE_NAME}-${tag} ${imageWithTag}"
-          }
           //sh "docker container ls --filter name=phpcicd-* -q | xargs docker container rm -f"
           //sh "sudo docker run -d -p 80:80 --name ${IMAGE_NAME}-${tag} ${imageWithTag}"
           echo "-------------------- Container Deployment Done --------------------"

@@ -27,6 +27,7 @@ pipeline {
           def imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
           //////////////////////
             sh "docker build -t ${IMAGE_NAME}:${tag} ."
+          echo "---------- Image Build Done ----------"
             //sh "docker tag ${IMAGE_NAME}:${tag} ${IMAGE_REPO}/${NAME}:${VERSION}"
           //////////////////////
 //////////// build image
@@ -35,7 +36,11 @@ pipeline {
           
 //////////// tag and push image
           sh "docker tag ${IMAGE_NAME}:${tag} ${imageWithTag}"
-          //sh "docker push ${imageWithTag}"
+          echo "---------- Image Tag Done ----------"
+          sh "docker login -u muhammadusama7 -p Usama1191"
+          echo "---------- Docker Login Done ----------"
+          sh "docker push ${imageWithTag}"
+          echo "---------- Image Push Done ----------"
         }
       }
     }

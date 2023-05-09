@@ -18,42 +18,31 @@ pipeline {
           userRemoteConfigs: [[url: 'https://github.com/musama78/testphpviajenkins-webhook.git']]
         )
       }
-//       steps {
-//                 checkout([
-//                  $class: 'GitSCM',
-//                  branches: [[name: 'master']],
-//                  userRemoteConfigs: [[
-//                     //url: 'git@github.com:wshihadeh/rabbitmq_client.git',
-//                    url: 'https://github.com/musama78/testphpviajenkins-webhook.git',
-//                     credentialsId: '',
-//                  ]]
-//                 ])
-//             }
     }
     ///////////////////////////////////////////////////////
-//     stage('Build and Push Image') {
-//       steps {
-//         script {
-//           def tag = sh(script: "date +%Y%m%d%H%M%S", returnStdout: true).trim()
-//           def imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
+    stage('Build and Push Image') {
+      steps {
+        script {
+          def tag = sh(script: "date +%Y%m%d%H%M%S", returnStdout: true).trim()
+          def imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
           
-//           // build image
-//           //sh "docker-compose build --build-arg IMAGE_TAG=${tag}"
-//           sh "docker-compose build . -t ${IMAGE_NAME}:${tag}"
+          // build image
+          sh "docker-compose build --build-arg IMAGE_TAG=${tag}"
+          //sh "docker-compose build . -t ${IMAGE_NAME}:${tag}"
           
-//           // tag and push image
-//           sh "docker tag ${IMAGE_NAME}:${tag} ${imageWithTag}"
-//           sh "docker push ${imageWithTag}"
+          // tag and push image
+          sh "docker tag ${IMAGE_NAME}:${tag} ${imageWithTag}"
+          sh "docker push ${imageWithTag}"
           
-//           sh "export myTAG=${tag}"
-//         }
-//       }
-//     }
+          sh "export myTAG=${tag}"
+        }
+      }
+    }
     //////////////////////////////////////////////////////
     stage ('Run Docker Compose') {
       steps{
-//         sh 'sudo docker-compose up -d --build --remove-orphans --force-recreate --no-deps --with-registry-auth --scale www=2 --name mycontainer --env TAGVAR=${tag}'
-        sh 'sudo docker-compose up -d'
+        sh 'sudo docker-compose up -d --build --remove-orphans --force-recreate --no-deps --name mycontainer --env TAGVAR=${tag}'
+//        sh 'sudo docker-compose up -d'
       }
     }
   }

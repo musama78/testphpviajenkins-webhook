@@ -56,6 +56,7 @@ pipeline {
         //sh 'sudo docker-compose up -d  --name mycontainer --env TAGVAR=${tag}'
         //--build --remove-orphans --force-recreate --no-deps
         //sh 'sudo docker-compose up -d'
+        sh "docker container ls --filter name=phpcicd-* -q | xargs docker container rm"
         sh "sudo docker run -d -p 80:80 --name ${IMAGE_NAME}-${tag} ${imageWithTag}"
         echo "-------------------- Container Deployment Done --------------------"
       }

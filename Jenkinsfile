@@ -56,17 +56,19 @@ pipeline {
         //sh 'sudo docker-compose up -d  --name mycontainer --env TAGVAR=${tag}'
         //--build --remove-orphans --force-recreate --no-deps
         //sh 'sudo docker-compose up -d'
-        def containerName = sh(script: "sudo docker ps -aqf 'name=phpcicd'", returnStdout: true).trim()
-      
-        if (containerName) {
-          sh "sudo docker rm -f ${containerName}"
-          sh "sudo docker run -d -p 80:80 --name ${IMAGE_NAME}-${tag} ${imageWithTag}"
-        } else {
-          sh "sudo docker run -d -p 80:80 --name ${IMAGE_NAME}-${tag} ${imageWithTag}"
+        script {
+          def containerName = sh(script: "sudo docker ps -aqf 'name=phpcicd'", returnStdout: true).trim()
+
+          if (containerName) {
+            sh "sudo docker rm -f ${containerName}"
+            sh "sudo docker run -d -p 80:80 --name ${IMAGE_NAME}-${tag} ${imageWithTag}"
+          } else {
+            sh "sudo docker run -d -p 80:80 --name ${IMAGE_NAME}-${tag} ${imageWithTag}"
+          }
+          //sh "docker container ls --filter name=phpcicd-* -q | xargs docker container rm -f"
+          //sh "sudo docker run -d -p 80:80 --name ${IMAGE_NAME}-${tag} ${imageWithTag}"
+          echo "-------------------- Container Deployment Done --------------------"
         }
-        //sh "docker container ls --filter name=phpcicd-* -q | xargs docker container rm -f"
-        //sh "sudo docker run -d -p 80:80 --name ${IMAGE_NAME}-${tag} ${imageWithTag}"
-        echo "-------------------- Container Deployment Done --------------------"
       }
     }
   }

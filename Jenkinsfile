@@ -23,7 +23,8 @@ pipeline {
     stage('Build and Push Image') {
       steps {
         script {
-          def tag = sh(script: "date +%Y%m%d%H%M%S", returnStdout: true).trim()
+//           def tag = sh(script: "date +%Y%m%d%H%M%S", returnStdout: true).trim()
+          def tag = sh(script: "date +%Y%m%d.%H%M", returnStdout: true).trim()
           def imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
           //////////////////////
             sh "docker build -t ${IMAGE_NAME}:${tag} ."

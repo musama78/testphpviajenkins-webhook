@@ -45,7 +45,7 @@ pipeline {
           echo "-------------------- Docker Login Done --------------------"
           
           // push image
-          sh "docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
+          sh "docker push ${imageWithTag}"
           echo "-------------------- Image Push Done --------------------"
         }
       }
@@ -53,8 +53,9 @@ pipeline {
     /* Running Container */
     stage ('Run Docker Compose') {
       steps{
-        //sh 'sudo docker-compose up -d --build --remove-orphans --force-recreate --no-deps --name mycontainer --env TAGVAR=${tag}'
-        sh 'sudo docker-compose up -d'
+        sh 'sudo docker-compose up -d --build --remove-orphans --force-recreate --no-deps --name mycontainer --env TAGVAR=${tag}'
+        //sh 'sudo docker-compose up -d'
+        //sh 'sudo docker run -it -d -name '
         echo "-------------------- Container Deployment Done --------------------"
       }
     }

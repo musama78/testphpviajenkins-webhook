@@ -53,8 +53,8 @@ pipeline {
     /* Running Container */
     stage ('Run Docker Compose') {
       steps{
-        sh 'sudo docker-compose up -d --build  --name mycontainer --env TAGVAR=${tag}'
-        //--remove-orphans --force-recreate --no-deps
+        sh 'sudo docker-compose up -d  --name mycontainer --env TAGVAR=${tag}'
+        //--build --remove-orphans --force-recreate --no-deps
         //sh 'sudo docker-compose up -d'
         //sh 'sudo docker run -it -d -name '
         echo "-------------------- Container Deployment Done --------------------"

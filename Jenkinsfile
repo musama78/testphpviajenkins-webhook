@@ -9,7 +9,7 @@ pipeline {
     DOCKER_REGISTRY = "muhammadusama7"
   }
   stages {
-            /* checkout repo */
+    /* checkout repo */
     stage('Checkout mySCM') {
       steps {
         checkout scmGit(
@@ -19,24 +19,31 @@ pipeline {
         )
       }
     }
-    ///////////////////////////////////////////////////////
-    stage('Build and Push Image') {
+    /* Building and Tagging */
+    stage('Build and Tag Image') {
       steps {
         script {
-          
-          
           //def tag = sh(script: "date +%Y%m%d%H%M%S", returnStdout: true).trim()
           def tag = sh(script: "date +%Y%m%d-%H%M", returnStdout: true).trim()
           def imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
           // build image
           sh "docker build -t ${IMAGE_NAME}:${tag} ."
           echo "-------------------- Image Build Done --------------------"
-          
-          // tag and push image
+          // tag image
           sh "docker tag ${IMAGE_NAME}:${tag} ${imageWithTag}"
           echo "-------------------- Image Tag Done --------------------"
+        }
+      }
+    }
+    /* Pushing */
+    stage('Push Image') {
+      steps {
+        script {
+          // Docker Login
           sh "docker login -u muhammadusama7 -p Usama1191"
           echo "-------------------- Docker Login Done --------------------"
+          
+          // push image
           sh "docker push ${imageWithTag}"
           echo "-------------------- Image Push Done --------------------"
         }

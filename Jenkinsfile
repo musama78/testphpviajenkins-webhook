@@ -23,25 +23,22 @@ pipeline {
     stage('Build and Push Image') {
       steps {
         script {
-//           def tag = sh(script: "date +%Y%m%d%H%M%S", returnStdout: true).trim()
-          def tag = sh(script: "date +%Y%m%d.%H%M", returnStdout: true).trim()
-          def imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
-          //////////////////////
-            sh "docker build -t ${IMAGE_NAME}:${tag} ."
-          echo "---------- Image Build Done ----------"
-            //sh "docker tag ${IMAGE_NAME}:${tag} ${IMAGE_REPO}/${NAME}:${VERSION}"
-          //////////////////////
-//////////// build image
-          //sh "docker-compose build --build-arg IMAGE_TAG=${tag}"
-          //sh "docker-compose build . -t ${IMAGE_NAME}:${tag}"
           
-//////////// tag and push image
+          
+          //def tag = sh(script: "date +%Y%m%d%H%M%S", returnStdout: true).trim()
+          def tag = sh(script: "date +%Y%m%d-%H%M", returnStdout: true).trim()
+          def imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
+          // build image
+          sh "docker build -t ${IMAGE_NAME}:${tag} ."
+          echo "-------------------- Image Build Done --------------------"
+          
+          // tag and push image
           sh "docker tag ${IMAGE_NAME}:${tag} ${imageWithTag}"
-          echo "---------- Image Tag Done ----------"
+          echo "-------------------- Image Tag Done --------------------"
           sh "docker login -u muhammadusama7 -p Usama1191"
-          echo "---------- Docker Login Done ----------"
+          echo "-------------------- Docker Login Done --------------------"
           sh "docker push ${imageWithTag}"
-          echo "---------- Image Push Done ----------"
+          echo "-------------------- Image Push Done --------------------"
         }
       }
     }

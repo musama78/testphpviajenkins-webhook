@@ -56,7 +56,7 @@ pipeline {
         //sh 'sudo docker-compose up -d  --name mycontainer --env TAGVAR=${tag}'
         //--build --remove-orphans --force-recreate --no-deps
         //sh 'sudo docker-compose up -d'
-        sh "sudo docker run ${imageWithTag}"
+        sh "sudo docker run -d --name ${imageWithTag} ${imageWithTag}"
         echo "-------------------- Container Deployment Done --------------------"
       }
     }

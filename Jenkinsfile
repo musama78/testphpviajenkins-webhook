@@ -25,23 +25,24 @@ pipeline {
         script {
           def tag = sh(script: "date +%Y%m%d%H%M%S", returnStdout: true).trim()
           def imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
-          
+          //////////////////////
+            sh "docker build -t ${IMAGE_NAME} ."
+            sh "docker tag ${NAME}:latest ${IMAGE_REPO}/${NAME}:${VERSION}"
+          //////////////////////
           // build image
-          sh "docker-compose build --build-arg IMAGE_TAG=${tag}"
+          //sh "docker-compose build --build-arg IMAGE_TAG=${tag}"
           //sh "docker-compose build . -t ${IMAGE_NAME}:${tag}"
           
           // tag and push image
-          sh "docker tag ${IMAGE_NAME}:${tag} ${imageWithTag}"
-          sh "docker push ${imageWithTag}"
-          
-          sh "export myTAG=${tag}"
+          //sh "docker tag ${IMAGE_NAME}:${tag} ${imageWithTag}"
+          //sh "docker push ${imageWithTag}"
         }
       }
     }
     //////////////////////////////////////////////////////
     stage ('Run Docker Compose') {
       steps{
-        sh 'sudo docker-compose up -d --build --remove-orphans --force-recreate --no-deps --name mycontainer --env TAGVAR=${tag}'
+//        sh 'sudo docker-compose up -d --build --remove-orphans --force-recreate --no-deps --name mycontainer --env TAGVAR=${tag}'
 //        sh 'sudo docker-compose up -d'
       }
     }

@@ -20,7 +20,7 @@ pipeline {
         )
       }
     }
-    /* Building and Tagging */
+    /* Building and Tagging. */
     stage('Build and Tag Image') {
       steps {
         script {

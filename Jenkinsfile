@@ -44,7 +44,7 @@ pipeline {
           echo "-------------------- Docker Login Done --------------------"
           
           // push image
-          sh "docker push ${imageWithTag}"
+          sh "docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
           echo "-------------------- Image Push Done --------------------"
         }
       }

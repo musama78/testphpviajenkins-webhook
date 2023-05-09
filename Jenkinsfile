@@ -1,5 +1,6 @@
 properties([pipelineTriggers([githubPush()])])
-
+def tag
+def imageWithTag
 pipeline {
   agent {
     label "abc"
@@ -24,8 +25,8 @@ pipeline {
       steps {
         script {
           //def tag = sh(script: "date +%Y%m%d%H%M%S", returnStdout: true).trim()
-          def tag = sh(script: "date +%Y%m%d-%H%M", returnStdout: true).trim()
-          def imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
+          tag = sh(script: "date +%Y%m%d-%H%M", returnStdout: true).trim()
+          imageWithTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${tag}"
           // build image
           sh "docker build -t ${IMAGE_NAME}:${tag} ."
           echo "-------------------- Image Build Done --------------------"

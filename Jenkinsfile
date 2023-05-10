@@ -2,10 +2,10 @@ properties([pipelineTriggers([githubPush()])])
 def tag
 def imageWithTag
 pipeline {
-  agent any
-//   agent {
-//     label "abc"
-//   }
+//  agent any
+  agent {
+    label "abc"
+  }
   environment {
     IMAGE_NAME = "phpcicd"
     DOCKER_REGISTRY = "muhammadusama7"
@@ -25,7 +25,7 @@ pipeline {
       steps {
         script {
           // Removing Containers
-          def containerName = sh(script: "docker ps -aqf 'name=phpcicd'", returnStdout: true).trim()
+          def containerName = sh(script: "sudo docker ps -aqf 'name=phpcicd'", returnStdout: true).trim()
           if (containerName) {
             sh "sudo docker rm -f ${containerName}"
             echo "++++++++++++++++++++ Previous Containers Removed ++++++++++++++++++++"

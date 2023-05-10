@@ -4,7 +4,7 @@
 </head>
 <body>
 
-    <?php echo "<h1>Hi! I'm Usama, This is SCM auto pull + image push... 07.35</h1>"; ?>
+    <?php echo "<h1>Hi! I'm Usama, This is SCM auto pull + image push... 07.40</h1>"; ?>
     <?php echo "<h3>This is Docker Compose Class!</h3>"; ?>
 
 </body>

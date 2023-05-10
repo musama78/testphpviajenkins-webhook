@@ -2,9 +2,10 @@ properties([pipelineTriggers([githubPush()])])
 def tag
 def imageWithTag
 pipeline {
-  agent {
-    label "abc"
-  }
+  agent any
+//   agent {
+//     label "abc"
+//   }
   environment {
     IMAGE_NAME = "phpcicd"
     DOCKER_REGISTRY = "muhammadusama7"

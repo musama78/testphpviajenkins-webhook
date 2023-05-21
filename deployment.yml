@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: php-app
-        image: muhammadusama7/myphpapp:latest
+        image: muhammadusama7/phpcicd:latest
         ports:
         - containerPort: 80
